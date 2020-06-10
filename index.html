@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mimi Gen</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+
+<header class="flex space-between">
+    <div class="logo">mimi generator</div>
+    <div class="header-buttons flex space-between">
+        <a>gallery</a>
+        <a>memes</a>
+        <a>about</a>
+    </div>
+</header>
+
+<body>
+    <section class="editor flex">
+        <div class="canvas-wrapper">
+            <canvas onclick="canvasClicked(event)" id="my-canvas"></canvas> </div>
+        <div class="inputs flex-column "><button onclick='onHideEditor()'>Exit</button>
+            <input class="input1 " type="text " oninput="drawText(250 , 50) ">
+            <input class="input2 " type="text " oninput="drawText(250 , 450) ">
+            <label for="shapes ">Font size:</label>
+            <input oninput="drawText() " type="number " name="size " id="size">
+            <input type="range " onmouseover="drawText() " id='range' min="20 " max="100 " onmouseup="setSize() ">
+            <button onclick="onMoveUp() ">&#8593 </button>
+            <button onclick="onMoveDown() ">&#8595</button>
+
+    </section>
+
+
+
+    <filter-section class="flex justify-center ">
+        <div class="filter-wrapper flex ">
+            <input type="search " value="Search " name="search " id=" ">
+            <div class="filter-buttons ">
+                <a>funny</a>
+                <a>cool</a>
+                <a>dogs</a>
+                <a>more...</a>
+            </div>
+        </div>
+    </filter-section>
+
+    <stock-images>
+    </stock-images>
+
+
+
+
+
+
+    <script src="js/storage-service.js "></script>
+    <script src="js/service.js "></script>
+    <script src="js/main.js "></script>
+</body>
+
+</html>

@@ -1,0 +1,113 @@
+@font-face {
+    font-family: Lato;
+    src: url(/fonts/Lato-Regular.ttf);
+}
+
+@font-face {
+    font-family: Euro;
+    src: url(/fonts/eurof55.ttf);
+}
+
+@font-face {
+    font-family: Lato-bold;
+    src: url(/fonts/Lato-Bold.ttf);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0px;
+}
+
+header {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    color: blanchedalmond;
+    background-color: rgb(71, 65, 65);
+    height: 50px;
+    margin-bottom: 50px;
+}
+
+.logo {
+    font-family: Euro;
+    font-size: 2rem;
+    margin-left: 50px;
+}
+
+.header-buttons {
+    width: 400px;
+    height: 100%;
+    margin-right: 200px;
+    font-family: Lato-bold;
+    font-size: 1.2rem;
+    line-height: 50px;
+}
+
+.header-buttons a {
+    cursor: pointer;
+}
+
+.filter-buttons a {
+    margin-left: 50px;
+    font-family: Lato;
+    cursor: pointer;
+}
+
+.filter-wrapper input {
+    justify-content: start;
+    margin-right: 50px;
+}
+
+stock-images {
+    display: grid;
+    grid-template-columns: repeat( auto-fill, minmax(150px, 1fr));
+    grid-template-rows: 1fr;
+    grid-gap: 20px;
+    /* height: 1000px; */
+    width: 80%;
+    margin: 50px auto;
+}
+
+stock-images img {
+    max-width: 150px;
+    max-height: 150px;
+    cursor: pointer;
+}
+
+.editor {
+    background-color: blue;
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    visibility: hidden;
+}
+
+
+/* HELPERS */
+
+.flex {
+    display: flex;
+}
+
+.flex-column {
+    flex-direction: column;
+}
+
+.space-between {
+    justify-content: space-between;
+}
+
+.justify-center {
+    justify-content: center;
+}
+
+.grid {
+    display: grid;
+}
+
+.hidden {
+    display: none;
+}
