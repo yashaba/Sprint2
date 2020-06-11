@@ -9,7 +9,6 @@ renderStockImages()
 
 function onOpenEditor(id, elImg) {
     document.querySelector('.input1').value = ''
-    document.querySelector('.input2').value = ''
     document.querySelector('#size').value = 55
 
 
@@ -35,55 +34,53 @@ function renderStockImages() {
 
 
 function drawImg(elImg) {
-
     gCtx.drawImage(elImg, 0, 0, gElCanvas.width, gElCanvas.height);
-    // gCtx.drawImage(elImg, 50, 50, 250, 250);
 }
-var gLine1 = document.querySelector('.input1').value
-var gLine1 = document.querySelector('.input2').value
 
 function drawText(x, y) {
 
     gCtx.clearRect(0, 0, gElCanvas.width, gElCanvas.height)
     drawImg(gCurrImg)
-    let size = document.querySelector('#size').value
-    gLines[0].txt = document.querySelector('.input1').value
-    gLines[1].txt = document.querySelector('.input2').value
+
     gCtx.lineWidth = '3';
-    gCtx.strokeStyle = 'black';
-    gCtx.fillStyle = 'white';
+    gCtx.strokeStyle = document.querySelector('#stroke').value;
+    gCtx.fillStyle = document.querySelector('#color').value;;
     gCtx.textAlign = 'center';
 
+    let domFont = document.querySelector('#font').value
+    let textAlign
+    gLines.forEach(line => {
+        line.font = domFont
 
-    gCtx.font = `${gLines[0].size}px IMPACT`;
-    gCtx.fillText(gLines[0].txt, gLines[0].x, gLines[0].y);
-    gCtx.strokeText(gLines[0].txt, gLines[0].x, gLines[0].y);
+        gCtx.font = `${line.size}px ${line.font}`;
+        gCtx.fillText(line.txt, line.x, line.y);
+        gCtx.strokeText(line.txt, line.x, line.y);
+        line.width = gCtx.measureText(line.txt).width;
+    })
 
-    gLines[0].width = gCtx.measureText(gLines[0].txt).width;
-
-
-    gCtx.font = `${gLines[1].size}px IMPACT`;
-    gCtx.fillText(gLines[1].txt, gLines[1].x, gLines[1].y);
-    gCtx.strokeText(gLines[1].txt, gLines[1].x, gLines[1].y);
-
-    gLines[1].width = gCtx.measureText(gLines[1].txt).width;
-
+    if (gSelectedLine) drawRect(gSelectedLine)
 
 }
 
+function getTextAllign() {
+    let txtAlVal = +document.querySelector('#text-allign').value
+    if (txtAlVal === 0) gLines.forEach(line => line.x = 0 + line.width / 2)
+    if (txtAlVal === 30) gLines.forEach(line => line.x = 250)
+    if (txtAlVal === 60) gLines.forEach(line => line.x = 500 - line.width / 2)
+    drawText()
+}
 
 function setSize() {
-    document.querySelector('#size').value = document.querySelector('#range').value
-
-    gLines.forEach(line => line.size = document.querySelector('#size').value)
-    drawText()
-    if (gSelectedLine) {
-        //debugger
-        gSelectedLine.size = document.querySelector('#size').value
-        drawRect(gSelectedLine)
+    document.querySelector('#size').value = document.querySelector('#size-range').value
+    if (!gSelectedLine) {
+        gLines.forEach(line => line.size = document.querySelector('#size').value)
+        drawText()
     }
-
-
+    if (gSelectedLine) {
+        gLines[gSelectedLine.idx].size = document.querySelector('#size').value
+        drawText()
+        drawRect(gLines[gSelectedLine.idx])
+    }
 }
 
 function onMoveUp() {
@@ -98,21 +95,74 @@ function onMoveDown() {
     drawRect(gSelectedLine)
 }
 
+function onSwitch() {
+    if (!gSelectedLine) return
+    gSelectedLine = gLines[gSelectedLine.idx + 1]
+    if (!gSelectedLine) gSelectedLine = gLines[0]
+    if (gSelectedLine.txt === '') onSwitch()
+    drawText()
+    drawRect(gSelectedLine)
+}
+
+var gSubmitIdx = 0
+
+function onSubmit() {
+
+    if (!gSelectedLine) {
+        if (gSubmitIdx === gLines.length) {
+            gLines.push({
+                idx: gSubmitIdx,
+                txt: '',
+                font: '',
+                size: 55,
+                x: 250,
+                y: 250,
+                color: 'white',
+                stroke: 'black',
+                width: ''
+            })
+        }
+        gLines[gSubmitIdx].txt = document.querySelector('.input1').value
+        document.querySelector('.input1').value = ''
+        drawText()
+        gSubmitIdx++
+        return
+    }
+
+    gLines[gSelectedLine.idx].txt = document.querySelector('.input1').value
+    document.querySelector('.input1').value = ''
+    drawText()
+}
+
+function onDeleteLine() {
+    if (!gSelectedLine) return
+    gLines[gSelectedLine.idx].txt = ''
+    gSelectedLine = null
+    document.querySelector('.input1').value = ''
+    drawText()
+}
+
 
 var gLines = [{
+        idx: 0,
         txt: '',
+        font: '',
         size: 55,
         x: 250,
         y: 50,
         color: 'white',
+        stoke: 'black',
         width: ''
     },
     {
+        idx: 1,
         txt: '',
+        font: '',
         size: 55,
         x: 250,
         y: 450,
         color: 'white',
+        stroke: 'black',
         width: ''
     }
 ]
@@ -121,22 +171,47 @@ var gSelectedLine
 
 function canvasClicked(ev) {
     const { offsetX: x, offsetY: y } = ev;
-
     var clickedLine = gLines.find((line, idx) => {
         //debugger
         if (x >= line.x - line.width / 2 && x < line.x + line.width / 2 && y > line.y - line.size + 11 && y < line.y) return line
     });
     gSelectedLine = clickedLine
-    if (gSelectedLine) drawRect(gSelectedLine)
+    if (gSelectedLine) {
+        drawRect(gLines[gSelectedLine.idx])
+        document.querySelector('.input1').value = gSelectedLine.txt
+        gDiffX = getDiff(ev).diffX
+        gDiffY = getDiff(ev).diffY
+    }
+
+    drawText()
 }
 
 function drawRect(line) {
-    //debugger
     gCtx.beginPath();
-    gCtx.rect(line.x - line.width / 2 - 5, line.y - line.size, line.width + 10, line.size + 10);
-    // gCtx.rect(x-75, y-75, 150, 150);
+    gCtx.rect(line.x - line.width / 2 - 5, line.y - line.size, line.width + 10, line.size * 1.25);
     gCtx.strokeStyle = 'black';
     gCtx.stroke();
     gCtx.fillStyle = 'orange';
-    //gCtx.fillRect(x, y, 150 / 2, 150 / 2);
+
+}
+
+var gDiffX
+var gDiffY
+
+function dragLine(ev) {
+
+    if (ev.buttons === 1 && gSelectedLine) {
+        gLines[gSelectedLine.idx].x = ev.offsetX + gDiffX
+        gLines[gSelectedLine.idx].y = ev.offsetY + gDiffY
+        drawText()
+    }
+}
+
+function getDiff(ev) {
+    if (gSelectedLine) {
+        return {
+            diffX: gLines[gSelectedLine.idx].x - ev.offsetX,
+            diffY: gLines[gSelectedLine.idx].y - ev.offsetY
+        }
+    }
 }

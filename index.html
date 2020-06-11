@@ -21,15 +21,46 @@
 <body>
     <section class="editor flex">
         <div class="canvas-wrapper">
-            <canvas onclick="canvasClicked(event)" id="my-canvas"></canvas> </div>
-        <div class="inputs flex-column "><button onclick='onHideEditor()'>Exit</button>
-            <input class="input1 " type="text " oninput="drawText(250 , 50) ">
-            <input class="input2 " type="text " oninput="drawText(250 , 450) ">
-            <label for="shapes ">Font size:</label>
-            <input oninput="drawText()" type="number " name="size " id="size">
-            <input type="range" onmouseover="drawText()" id='range' min="20 " max="100 " onmouseup="setSize() ">
-            <button onclick="onMoveUp() ">&#8593 </button>
-            <button onclick="onMoveDown() ">&#8595</button>
+            <canvas onmousemove="dragLine(event)" onmousedown="canvasClicked(event)" id="my-canvas"></canvas>
+
+        </div>
+
+        <div class="inputs flex flex-column space-between ">
+            <div class="btn-bgc">
+                <input class="input1 flex flex-column justify-center" type="text" oninput="drawText(250 , 50)">
+                <div class="flex space-around  ">
+                    <button onclick="onSubmit()"><img src="./svgs/add.svg"></button>
+                    <button onclick="onDeleteLine()"><img src="./svgs/delete.svg"></button>
+                </div>
+            </div>
+            <label for="shapes">Font size:</label>
+            <input oninput="drawText()" type="number" name="size" id="size">
+            <input type="range" id='size-range' min="20" max="100" oninput="setSize()">
+            <button onclick="onSwitch()">Switch</button>
+            <button onclick="onMoveUp()">&#8593 </button>
+            <button onclick="onMoveDown()">&#8595</button>
+            <div class="alligns-wrapper flex-column btn-bgc">
+                <div class="alligns flex space-between">
+                    <a> <img src="./svgs/left.svg" alt="" srcset=""> </a>
+                    <a> <img src="./svgs/center.svg" alt="" srcset=""> </a>
+                    <a> <img src="./svgs/right.svg" alt="" srcset=""> </a>
+                </div>
+
+                <input type="range" oninput="getTextAllign()" id="text-allign" name="text-allign" min="0" max="60" value="60" step="30">
+            </div>
+            <div class="colors flex space-around">
+                <input oninput="drawText()" type="color" value="#ffffff" name="color" id="color">
+                <input oninput="drawText()" type="color" name="stroke" id="stroke">
+            </div>
+            <option value="test"></option>
+
+            <select oninput="drawText()" name="font" id="font">
+                <option value="Impact"> Impact </option>
+                <option value="Lato"> Lato </option>
+                <option value="Impact"> Impact </option>
+            </select>
+            <button onclick='onHideEditor()'>Exit</button>
+        </div>
 
     </section>
 
