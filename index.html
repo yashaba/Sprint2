@@ -11,6 +11,7 @@
 
 <header class="flex space-between">
     <div class="logo">mimi generator</div>
+    <button class="butn-menu" onclick="toggleMenu()">☰</button>
     <div class="header-buttons flex space-between">
         <a>gallery</a>
         <a>memes</a>
@@ -20,66 +21,97 @@
 
 <body>
     <section class="editor flex">
-        <div class="canvas-wrapper">
-            <canvas onmousemove="dragLine(event)" onmousedown="canvasClicked(event)" id="my-canvas"></canvas>
+        <div class="flex justify-center element-container ">
 
-        </div>
+            <div class="sticker-container flex wrap justify-center"></div>
 
-        <div class="inputs flex flex-column space-between ">
-            <div class="btn-bgc">
-                <input class="input1 flex flex-column justify-center" type="text" oninput="drawText(250 , 50)">
-                <div class="flex space-around  ">
-                    <button onclick="onSubmit()"><img src="./svgs/add.svg"></button>
-                    <button onclick="onDeleteLine()"><img src="./svgs/delete.svg"></button>
-                </div>
-            </div>
-            <label for="shapes">Font size:</label>
-            <input oninput="drawText()" type="number" name="size" id="size">
-            <input type="range" id='size-range' min="20" max="100" oninput="setSize()">
-            <button onclick="onSwitch()">Switch</button>
-            <button onclick="onMoveUp()">&#8593 </button>
-            <button onclick="onMoveDown()">&#8595</button>
-            <div class="alligns-wrapper flex-column btn-bgc">
-                <div class="alligns flex space-between">
-                    <a> <img src="./svgs/left.svg" alt="" srcset=""> </a>
-                    <a> <img src="./svgs/center.svg" alt="" srcset=""> </a>
-                    <a> <img src="./svgs/right.svg" alt="" srcset=""> </a>
+            <div class="canvas-and-controls flex">
+                <div class="canvas-wrapper">
+                    <canvas class="drop-zone" ondrop='drawSticker(event)' ondragover='return false' onmousemove="dragLine(event);initResize(event)" onmousedown="canvasClicked(event)" id="my-canvas"></canvas>
+
                 </div>
 
-                <input type="range" oninput="getTextAllign()" id="text-allign" name="text-allign" min="0" max="60" value="60" step="30">
-            </div>
-            <div class="colors flex space-around">
-                <input oninput="drawText()" type="color" value="#ffffff" name="color" id="color">
-                <input oninput="drawText()" type="color" name="stroke" id="stroke">
-            </div>
-            <option value="test"></option>
 
-            <select oninput="drawText()" name="font" id="font">
+                <div class="inputs flex flex-column space-between ">
+                    <div class="btn-bgc">
+                        <input class="input1 flex flex-column justify-center" placeholder="          Type a mimi" type="text" oninput="onEdit()">
+                        <div class="flex space-around  ">
+                            <button onclick="onSubmit()"><img src="./svgs/add.svg"></button>
+                            <button onclick="onSwitch()"> <img  src="./svgs/switch.svg" alt=""> </button>
+                            <button onclick="onDeleteLine()"><img src="./svgs/delete.svg"></button>
+                        </div>
+                    </div>
+                    <div class="btn-bgc flex space-between">
+                        <img src="/svgs/font.svg">
+                        <select oninput="drawText()" name="font" id="font">
                 <option value="Impact"> Impact </option>
                 <option value="Lato"> Lato </option>
                 <option value="Impact"> Impact </option>
-            </select>
-            <button onclick='onHideEditor()'>Exit</button>
+               </select>
+                        <div class="colors-wrapper"></div>
+
+                        <div class="relative">
+                            <a class="font-icon">S</a>
+                            <input oninput="drawText()" type="color" name="stroke" id="stroke">
+                        </div>
+
+                        <div class="relative">
+                            <img class="absolute" src="/svgs/color.svg">
+                            <input oninput="drawText()" type="color" value="#ffffff" name="color" id="color">
+                        </div>
+
+
+                    </div>
+                    <div class="btn-bgc flex justify-center">
+                        <a> <img width="15" height="13" src="./icons/decrease font - icon.png" alt=""></a>
+                        <input type="range" id='size-range' min="20" max="100" oninput="setSize()">
+                        <a> <img width="15" height="13" src="./icons/increase font - icon.png" alt=""></a>
+                    </div>
+                    <!-- <div class="btn-bgc flex flex-column">
+                <button onclick="onMoveUp()"><img width="15" height="13" src="/icons/up.png" alt=""> </button>
+
+                <button onclick="onMoveDown()"> <img  width="15" height="13" src="/icons/down.png" alt=""></button>
+            </div> -->
+                    <div class="alligns-wrapper flex-column btn-bgc">
+                        <div class="alligns flex space-between">
+                            <a> <img src="./svgs/left.svg" alt="" srcset=""> </a>
+                            <a> <img src="./svgs/center.svg" alt="" srcset=""> </a>
+                            <a> <img src="./svgs/right.svg" alt="" srcset=""> </a>
+                        </div>
+
+                        <input type="range" oninput="getTextAllign()" id="text-allign" name="text-allign" min="0" max="60" value="60" step="30">
+                    </div>
+
+
+                    <div class="flex btn-bgc space-between"> <button> <img src="/svgs/share.svg" ></button>
+                        <button> <img src="/svgs/save.svg" ></button>
+                        <button> <a href="#" onclick="onDownloadCanvas(this)"> <img src="/svgs/download-solid.svg"></a> </button>
+                    </div>
+
+                    <button onclick='onHideEditor()'> <img src="/svgs/exit.svg" alt=""> </button>
+                </div>
+            </div>
         </div>
 
     </section>
 
 
-
-    <filter-section class="flex justify-center ">
-        <div class="filter-wrapper flex ">
-            <input type="search " value="Search " name="search " id=" ">
-            <div class="filter-buttons ">
-                <a>funny</a>
-                <a>cool</a>
-                <a>dogs</a>
-                <a>more...</a>
+    <main>
+        <filter-section class="flex justify-center ">
+            <div class="filter-wrapper flex ">
+                <input type="search " value="Search " name="search " id=" ">
+                <div class="filter-buttons ">
+                    <a>funny</a>
+                    <a>cool</a>
+                    <a>dogs</a>
+                    <a>more...</a>
+                </div>
             </div>
-        </div>
-    </filter-section>
+        </filter-section>
 
-    <stock-images>
-    </stock-images>
+        <stock-images>
+        </stock-images>
+    </main>
 
 
 

@@ -28,7 +28,7 @@ header {
     color: blanchedalmond;
     background-color: rgb(71, 65, 65);
     height: 50px;
-    margin-bottom: 50px;
+    /* margin-bottom: 50px; */
 }
 
 .logo {
@@ -37,7 +37,12 @@ header {
     margin-left: 50px;
 }
 
+.butn-menu {
+    display: none;
+}
+
 .header-buttons {
+    display: block;
     width: 400px;
     height: 100%;
     margin-right: 200px;
@@ -50,6 +55,10 @@ header {
     cursor: pointer;
 }
 
+filter-section {
+    margin-top: 50px;
+}
+
 .filter-buttons a {
     margin-left: 50px;
     font-family: Lato;
@@ -59,6 +68,10 @@ header {
 .filter-wrapper input {
     justify-content: start;
     margin-right: 50px;
+}
+
+main {
+    visibility: visible;
 }
 
 stock-images {
@@ -78,16 +91,43 @@ stock-images img {
 }
 
 .editor {
-    background-color: blue;
-    width: 100vw;
-    height: 100vh;
-    position: fixed;
     visibility: hidden;
+    position: absolute;
+    background-color: rgb(238, 238, 230);
+    width: 100%;
+    height: 100vh;
+    /* position: fixed; */
+    justify-content: center;
+}
+
+.element-container {
+    flex-wrap: wrap-reverse;
+}
+
+.sticker-container {
+    width: 15%;
+    height: 500px;
+    background-color: rgb(104, 100, 100);
+    margin: 30px;
+    overflow-y: scroll;
+}
+
+.sticker-container img {
+    width: 50px;
+    height: 50px;
 }
 
 .canvas-wrapper {
+    width: 500px;
+    height: 500px;
     margin: 30px;
 }
+
+
+/* canvas {
+    width: 500px;
+    height: 500px;
+} */
 
 .inputs {
     margin: 30px;
@@ -97,11 +137,75 @@ stock-images img {
     ;
 }
 
+.font-icon {
+    /* position: absolute; */
+    width: 11px;
+    height: 18px;
+    /* left: 1340px; */
+    /* top: 141px; */
+    font-family: Georgia;
+    font-size: 16px;
+    line-height: 18px;
+    color: #727272;
+    position: absolute;
+}
+
+.font-icon a {
+    z-index: 1;
+}
+
+input#size-range {
+    width: 100px;
+}
+
+input.input1 {
+    width: 100%;
+}
+
+#text-allign {
+    width: 100%;
+}
+
+input[type='color'] {
+    width: 15px;
+    height: 10px;
+    position: absolute;
+    transform: rotate(90deg) scaleX(1.6);
+    top: 11px;
+    right: -12px;
+    background-color: rgba(54, 52, 52, 0);
+    border: rgb(0, 0, 2, 2);
+    color: rgb(0, 0, 0, 0);
+    cursor: pointer;
+}
+
+select {
+    margin-left: -13px;
+}
+
+.inputs .btn-bgc button {
+    display: flex;
+    margin: 2px 0px 2px 0px;
+    width: 30px;
+    height: 30px;
+    justify-content: center;
+    /* align-items: center; */
+    align-self: center;
+    border-radius: 5px;
+    padding: 5px 0 5px 0;
+    background-color: rgb(201, 201, 201, 0.8);
+    cursor: pointer;
+}
+
 
 /* HELPERS */
 
 .flex {
     display: flex;
+}
+
+.wrap {
+    flex-wrap: wrap;
 }
 
 .flex-column {
@@ -131,5 +235,103 @@ stock-images img {
 
 .btn-bgc {
     background-color: rgb(71, 65, 65);
-    ;
+    padding: 10px;
+}
+
+.relative {
+    position: relative;
+    margin-right: 10px;
+}
+
+.absolute {
+    position: absolute;
+}
+
+@media only screen and (max-width: 1050px) {
+    .element-container {
+        flex-direction: column-reverse;
+        align-items: flex-end;
+    }
+    .sticker-container {
+        width: 500px;
+        height: 120px;
+        margin: 0px 0px 0px 30px;
+        overflow-y: auto;
+        /* overflow-y: unset; */
+        /* overflow-x: scroll;
+        overflow: scroll; */
+        /* flex-wrap: nowrap; */
+    }
+}
+
+@media only screen and (max-width: 810px) {
+    .inputs {
+        margin: 0px 0px 0px 0px;
+        /* height: 100%; */
+        float: left;
+        background-color: rgb(104, 100, 100);
+        ;
+    }
+    .canvas-wrapper {
+        margin: 0px 0px 0px 30px;
+    }
+    .sticker-container {
+        width: 500px;
+        height: 60px;
+        margin: 0px 0px 0px 30px;
+        overflow-y: auto;
+        /* overflow-y: unset; */
+        /* overflow-x: scroll;
+        overflow: scroll; */
+        /* flex-wrap: nowrap; */
+    }
+}
+
+@media only screen and (max-width: 740px) {
+    .header-buttons {
+        display: none;
+    }
+    .butn-menu {
+        display: block;
+    }
+    .canvas-wrapper {
+        width: 100%;
+        height: auto;
+        margin: 0px 0px 0px 0px;
+        /* padding-top: 100% */
+    }
+    .canvas-and-controls {
+        flex-direction: column;
+        margin: 0px 0px 0px 0px;
+    }
+    .inputs {
+        margin: 0px 0px 0px 0px;
+        /* height: 200px; */
+        float: left;
+        background-color: rgb(104, 100, 100);
+        height: auto;
+        width: 100%;
+        ;
+    }
+    .element-container {
+        margin: 0px auto;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        margin-right: 40px;
+        flex-wrap: nowrap;
+        width: 80vw;
+        /* height: auto; */
+        /* padding-top: 100%; */
+    }
+    .sticker-container {
+        width: 100%;
+        height: 60px;
+        margin: 0px 0px 2px 0px;
+        overflow-y: auto;
+        /* overflow-y: unset; */
+        /* overflow-x: scroll;
+        overflow: scroll; */
+        /* flex-wrap: nowrap; */
+    }
 }
