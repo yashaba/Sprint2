@@ -23,11 +23,12 @@
     <section class="editor flex">
         <div class="flex justify-center element-container ">
 
-            <div class="sticker-container flex wrap justify-center"></div>
+            <div class="sticker-container flex wrap justify-center "></div>
 
             <div class="canvas-and-controls flex">
                 <div class="canvas-wrapper">
-                    <canvas class="drop-zone" ondrop='drawSticker(event)' ondragover='return false' onmousemove="dragLine(event);initResize(event)" onmousedown="canvasClicked(event)" id="my-canvas"></canvas>
+                    <canvas ontouchstart="canvasClicked(event)" ontouchend="handleTouch(event)" ontouchmove="handleTouch(event)" class="drop-zone touch" ondrop='drawSticker(event)' ondragover='return false' onmousemove="dragLine(event);initResize(event)" onmousedown="canvasClicked(event)"
+                        id="my-canvas"></canvas>
 
                 </div>
 
@@ -79,7 +80,7 @@
                             <a> <img src="./svgs/right.svg" alt="" srcset=""> </a>
                         </div>
 
-                        <input type="range" oninput="getTextAllign()" id="text-allign" name="text-allign" min="0" max="60" value="60" step="30">
+                        <input type="range" oninput="getTextAllign()" id="text-allign" name="text-allign" min="0" max="60" value="30" step="30">
                     </div>
 
 
@@ -119,6 +120,7 @@
 
 
     <script src="js/storage-service.js "></script>
+    <script src="lib/hammer.min.js"></script>
     <script src="js/service.js "></script>
     <script src="js/main.js "></script>
 </body>

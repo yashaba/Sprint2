@@ -4,6 +4,12 @@ var imagesFilter
 var gElCanvas = document.getElementById('my-canvas');
 var gCtx = gElCanvas.getContext('2d');
 var gCurrImg
+var gDraggedImg
+var gStickers = []
+var gStickerIdx = 0
+var gSelectedLine
+var gSelectedSticker
+var gSubmitIdx = 0
 
 
 
@@ -34,20 +40,7 @@ function onOpenEditor(id, elImg) {
 function onHideEditor() {
     document.querySelector('.editor').style.visibility = 'hidden'
     document.querySelector('main').style.display = 'block'
-    gLines = [{
-        idx: 0,
-        txt: '',
-        font: '',
-        size: 55,
-        x: 250,
-        y: 50,
-        color: 'white',
-        stoke: 'black',
-        width: ''
-    }, { idx: 1, txt: '', font: '', size: 55, x: 250, y: 450, color: 'white', stroke: 'black', width: '' }]
-    gStickers = []
-    gSelectedLine = null
-    gSelectedSticker = null
+    resetGlobals()
 }
 
 function renderStockImages() {
@@ -129,7 +122,7 @@ function onSwitch() {
     drawRect(gSelectedLine)
 }
 
-var gSubmitIdx = 0
+
 
 function onSubmit() {
 
@@ -198,12 +191,19 @@ var gLines = [{
     }
 ]
 
-var gSelectedLine
-var gSelectedSticker
 
 function canvasClicked(ev) {
     const { offsetX: x, offsetY: y } = ev;
     console.log(x, y);
+    //console.log(ev.type);
+
+    if (ev.type === "touchstart") {
+        console.log('touched')
+        console.log(ev);
+        return
+    };
+
+
 
     var clickedLine = gLines.find((line, idx) => {
 
@@ -322,16 +322,18 @@ function onDownloadCanvas(elLink) {
 function renderEmoji() {
     let container = document.querySelector('.sticker-container')
     for (let i = 1; i < 22; i++) {
-        container.innerHTML += `<img draggable="true" ondrag='setImg(this)'  src="./svgs/stickers/${i}.svg">`
+        container.innerHTML += `<img ontouchstart='drawSticker(event, this)' class='touch' draggable="true" ondrag='setImg(this)'  src="./svgs/stickers/${i}.svg">`
     }
 
 }
-var gDraggedImg
-var gStickers = []
-var gStickerIdx = 0
 
-function drawSticker(ev) {
+
+function drawSticker(ev, elImg) {
     ev.preventDefault();
+    if (ev.type === 'touchstart') {
+        gCtx.drawImage(elImg, 250, 250 - 25, 50, 50);
+        return
+    }
     gCtx.drawImage(gDraggedImg, ev.offsetX - 25, ev.offsetY - 25, 50, 50);
     console.log(gDraggedImg, ev.offsetX, ev.offsetY);
 
@@ -366,4 +368,12 @@ function drawArc(x, y) {
     gCtx.fillStyle = 'blue'
     gCtx.fill()
 
+}
+
+
+
+
+function handleTouch(ev) {
+    ev.preventDefault()
+    console.log(ev);
 }

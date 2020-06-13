@@ -52,3 +52,26 @@ function getNextId() {
 
     return nextId
 }
+
+
+function resetGlobals() {
+    gLines = [{
+        idx: 0,
+        txt: '',
+        font: '',
+        size: 55,
+        x: 250,
+        y: 50,
+        color: 'white',
+        stoke: 'black',
+        width: ''
+    }, { idx: 1, txt: '', font: '', size: 55, x: 250, y: 450, color: 'white', stroke: 'black', width: '' }]
+    gStickers = []
+    gSelectedLine = null
+    gSelectedSticker = null
+}
+
+var hammertime = new Hammer(myElement, myOptions);
+hammertime.on('pan', function(ev) {
+    console.log(ev);
+});
