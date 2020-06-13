@@ -295,7 +295,7 @@ select {
         display: block;
     }
     .canvas-wrapper {
-        width: 100%;
+        width: 100vw;
         height: auto;
         margin: 0px 0px 0px 0px;
         /* padding-top: 100% */
@@ -313,6 +313,10 @@ select {
         width: 100%;
         ;
     }
+    .editor {
+        width: 100vw;
+        height: 100vh;
+    }
     .element-container {
         margin: 0px auto;
         flex-direction: column;
@@ -320,8 +324,8 @@ select {
         align-items: center;
         margin-right: 40px;
         flex-wrap: nowrap;
-        width: 80vw;
-        /* height: auto; */
+        width: 100vw;
+        height: auto;
         /* padding-top: 100%; */
     }
     .sticker-container {
