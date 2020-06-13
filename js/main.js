@@ -5,21 +5,23 @@ var gElCanvas = document.getElementById('my-canvas');
 var gCtx = gElCanvas.getContext('2d');
 var gCurrImg
 
-renderStockImages()
-renderEmoji()
+
+
+function init() {
+    renderStockImages()
+    renderEmoji()
+}
+
 
 function onOpenEditor(id, elImg) {
     document.querySelector('.input1').value = ''
     document.querySelector('#size-range').value = 55
     document.querySelector('main').style.display = 'none'
 
-
-
     // gElCanvas.width = 500;
     // gElCanvas.height = 500;
     gElCanvas.style.width = '100%';
     gElCanvas.style.height = '100%';
-    // ...then set the internal size to match
     gElCanvas.width = gElCanvas.offsetWidth;
     gElCanvas.height = gElCanvas.offsetHeight;
 
@@ -54,8 +56,6 @@ function renderStockImages() {
 
     imgs.forEach(img => elStockContainer.innerHTML += `<img onclick='onOpenEditor(${img.id},this)' src= '${img.url}'>`)
 }
-
-
 
 function drawImg(elImg, x = 0, y = 0, ) {
     gCtx.drawImage(elImg, x, y, gElCanvas.width, gElCanvas.height);
@@ -174,7 +174,6 @@ function onDeleteLine() {
     drawText()
 }
 
-
 var gLines = [{
         idx: 0,
         txt: '',
@@ -247,20 +246,12 @@ var gResizeActive = false
 function initResize(ev) {
     const { offsetX: x, offsetY: y } = ev;
     if (gResizeActive && ev.buttons === 1) {
-        // gDiffX = getDiff(ev).diffX
-        // gDiffY = getDiff(ev).diffY
-        // currSticker.x = gSelectedSticker.x
-        // currSticker.y = gSelectedSticker.y
-
         let currSticker = gStickers[gSelectedSticker.idx]
         currSticker.size = (x - currSticker.x)
         drawText()
         console.log(currSticker.size);
-
-
     }
 }
-
 
 function drawRect(line) {
     gCtx.beginPath();
