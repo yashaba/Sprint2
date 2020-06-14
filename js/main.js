@@ -10,12 +10,43 @@ var gStickerIdx = 0
 var gSelectedLine
 var gSelectedSticker
 var gSubmitIdx = 0
+var gDiffX
+var gDiffY
+var gResizeActive = false
+
+console.log(gElCanvas.height);
+
+var gLines = [{
+        idx: 0,
+        txt: '',
+        font: '',
+        size: 55,
+        x: gElCanvas.width * 0.5,
+        y: gElCanvas.height * 0.05,
+        color: 'white',
+        stoke: 'black',
+        width: ''
+    },
+    {
+        idx: 1,
+        txt: '',
+        font: '',
+        size: 55,
+        x: gElCanvas.width * 0.5,
+        y: gElCanvas.height * 0.95,
+        color: 'white',
+        stroke: 'black',
+        width: ''
+    }
+
+]
 
 
 
-function init() {
+function onInit() {
     renderStockImages()
     renderEmoji()
+        //onResizeCanvas()
 }
 
 
@@ -24,16 +55,37 @@ function onOpenEditor(id, elImg) {
     document.querySelector('#size-range').value = 55
     document.querySelector('main').style.display = 'none'
 
+
+
+    var elContainer = document.querySelector('.canvas-wrapper');
+    // Note: changing the canvas dimension this way clears the canvas
+
+
+    console.log('resize trigger');
+    gElCanvas.width = elContainer.offsetWidth;
+    gElCanvas.height = elContainer.offsetHeight;
+
+    gLines[0].x = gElCanvas.width * 0.5
+    gLines[0].y = gElCanvas.height * 0.10
+    gLines[0].size = gElCanvas.width * 0.1
+    gLines[1].x = gElCanvas.width * 0.5
+    gLines[1].y = gElCanvas.height * 0.95
+    gLines[1].size = gElCanvas.width * 0.1
+
+
+
     // gElCanvas.width = 500;
     // gElCanvas.height = 500;
-    gElCanvas.style.width = '100%';
-    gElCanvas.style.height = '100%';
-    gElCanvas.width = gElCanvas.offsetWidth;
-    gElCanvas.height = gElCanvas.offsetHeight;
+    // onResizeCanvas()
+    // gElCanvas.style.width = '100%';
+    // gElCanvas.style.height = '100%';
+    // gElCanvas.width = gElCanvas.offsetWidth;
+    // gElCanvas.height = gElCanvas.offsetHeight;
 
     drawImg(elImg)
     gCurrImg = elImg
     document.querySelector('.editor').style.visibility = 'visible';
+
 
 }
 
@@ -132,9 +184,9 @@ function onSubmit() {
                 idx: gSubmitIdx,
                 txt: '',
                 font: '',
-                size: 55,
-                x: 250,
-                y: 250,
+                size: gElCanvas.width * 0.1,
+                x: gElCanvas.width * 0.5,
+                y: gElCanvas.height * 0.5,
                 color: 'white',
                 stroke: 'black',
                 width: ''
@@ -167,33 +219,13 @@ function onDeleteLine() {
     drawText()
 }
 
-var gLines = [{
-        idx: 0,
-        txt: '',
-        font: '',
-        size: 55,
-        x: 250,
-        y: 50,
-        color: 'white',
-        stoke: 'black',
-        width: ''
-    },
-    {
-        idx: 1,
-        txt: '',
-        font: '',
-        size: 55,
-        x: 250,
-        y: 450,
-        color: 'white',
-        stroke: 'black',
-        width: ''
-    }
-]
+
 
 
 function canvasClicked(ev) {
     const { offsetX: x, offsetY: y } = ev;
+
+
     console.log(x, y);
     //console.log(ev.type);
 
@@ -205,22 +237,34 @@ function canvasClicked(ev) {
 
 
 
-    var clickedLine = gLines.find((line, idx) => {
+    let clickedLine = gLines.find((line) => {
 
-        if (x >= line.x - line.width / 2 && x < line.x + line.width / 2 && y > line.y - line.size + 11 && y < line.y) return line
+        if (x >= line.x - line.width / 2 &&
+            x < line.x + line.width / 2 &&
+            y > line.y - line.size + 11 &&
+            y < line.y) return line
     });
-    var clickedSticker = gStickers.find((sticker, idx) => {
 
-        if (x >= sticker.x && x < sticker.x + sticker.size && y > sticker.y && y < sticker.y + sticker.size) return sticker
+    let clickedSticker = gStickers.find((sticker) => {
+
+        if (x >= sticker.x &&
+            x < sticker.x + sticker.size &&
+            y > sticker.y &&
+            y < sticker.y + sticker.size) return sticker
     });
+
     gSelectedLine = clickedLine
     gSelectedSticker = clickedSticker
+
     if (gSelectedLine) {
         drawRect(gLines[gSelectedLine.idx])
         document.querySelector('.input1').value = gSelectedLine.txt
         gDiffX = getDiff(ev).diffX
         gDiffY = getDiff(ev).diffY
+
     } else {
+
+        ///Clearing text box if the user clicks on an empty spot
         document.querySelector('.input1').value = ''
         drawText()
     }
@@ -228,6 +272,8 @@ function canvasClicked(ev) {
         drawRectSticker(gStickers[gSelectedSticker.idx])
         gDiffX = getDiff(ev).diffX
         gDiffY = getDiff(ev).diffY
+
+        ////// Checking if user is dragging the blue ball
         if (x >= gSelectedSticker.x + gSelectedSticker.size - 10 &&
             x < gSelectedSticker.x + gSelectedSticker.size &&
             y > gSelectedSticker.y - 10 &&
@@ -241,7 +287,7 @@ function canvasClicked(ev) {
     gResizeActive = false
 }
 
-var gResizeActive = false
+
 
 function initResize(ev) {
     const { offsetX: x, offsetY: y } = ev;
@@ -273,8 +319,7 @@ function drawRectSticker(sticker) {
 
 }
 
-var gDiffX
-var gDiffY
+
 
 function dragLine(ev) {
     if (gResizeActive) return
@@ -318,13 +363,12 @@ function onDownloadCanvas(elLink) {
 }
 
 
-
+/////////////////////////////////////
 function renderEmoji() {
     let container = document.querySelector('.sticker-container')
     for (let i = 1; i < 22; i++) {
         container.innerHTML += `<img ontouchstart='drawSticker(event, this)' class='touch' draggable="true" ondrag='setImg(this)'  src="./svgs/stickers/${i}.svg">`
     }
-
 }
 
 
@@ -334,6 +378,7 @@ function drawSticker(ev, elImg) {
         gCtx.drawImage(elImg, 250, 250 - 25, 50, 50);
         return
     }
+
     gCtx.drawImage(gDraggedImg, ev.offsetX - 25, ev.offsetY - 25, 50, 50);
     console.log(gDraggedImg, ev.offsetX, ev.offsetY);
 
@@ -350,13 +395,34 @@ function setImg(elImg) {
     gDraggedImg = elImg
 }
 
+var gOriginalCanvas = document.querySelector('.canvas-wrapper').offsetWidth
 
-function resizeCanvas() {
-    var elContainer = document.querySelector('.canvas-container');
+function onResizeCanvas() {
+    var elContainer = document.querySelector('.canvas-wrapper');
     // Note: changing the canvas dimension this way clears the canvas
 
     gElCanvas.width = elContainer.offsetWidth;
     gElCanvas.height = elContainer.offsetHeight;
+
+    var diff = gOriginalCanvas - elContainer.offsetWidth
+    let y = gElCanvas.height * 0.10
+    for (let i = 0; i < gLines.length; i++) {
+        if (i === 1) y = gElCanvas.height * 0.95
+        if (i > 1) y = gElCanvas.height * 0.5
+        gLines[i].x = gElCanvas.width * 0.5
+        gLines[i].y = y
+        gLines[i].size = gElCanvas.width * 0.1
+
+    }
+
+    gStickers.forEach(sticker => {
+        sticker.size = gElCanvas.width * 0.1
+        sticker.x = gElCanvas.height * 0.5
+        sticker.y = gElCanvas.height * 0.5
+    })
+
+    drawImg(gCurrImg)
+    drawText()
 }
 
 function drawArc(x, y) {
